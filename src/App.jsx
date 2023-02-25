@@ -1,33 +1,35 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
+import Header from './components/Header'
+import AddForm from './components/AddForm'
+import Tareas from './components/Tareas'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [showForm, setShowForm] = useState(false)
+  const [task, setTask] = useState([
+    {
+      id: 1,
+      texto: 'Correr',
+      fecha: '25 Febrero',
+      terminada : false,
+    }
+  ])
+
+  const addTarea =(tarea)=>{
+    const id = task.length +1;
+    const newTask = {id, ...tarea}
+    setTask([...task, newTask]);
+  }
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <div className="container">
+      <Header titulo={"Administrador de tareas"} showForm={showForm} onAdd={()=>setShowForm(!showForm)} />
+      {showForm && <AddForm onAdd={addTarea}/> }
+      
+      <Tareas tareas={task}/>
     </div>
+      
   )
 }
 
